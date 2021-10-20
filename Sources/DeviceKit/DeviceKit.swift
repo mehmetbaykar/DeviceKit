@@ -719,12 +719,6 @@ public enum Device {
         return [.iPad2, .iPad3, .iPad4, .iPadAir, .iPadAir2, .iPad5, .iPad6, .iPadAir3, .iPad7, .iPad8, .iPad9, .iPadAir4, .iPadMini, .iPadMini2, .iPadMini3, .iPadMini4, .iPadMini5, .iPadMini6, .iPadPro9Inch, .iPadPro12Inch, .iPadPro12Inch2, .iPadPro10Inch, .iPadPro11Inch, .iPadPro12Inch3, .iPadPro11Inch2, .iPadPro12Inch4, .iPadPro11Inch3, .iPadPro12Inch5]
     }
     
-    /// All X-Series Devices
-    @available(*, deprecated, renamed: "allDevicesWithSensorHousing")
-    public static var allXSeriesDevices: [Device] {
-        return [.iPhoneX, .iPhoneXS, .iPhoneXSMax, .iPhoneXR, .iPhone11, .iPhone11Pro, .iPhone11ProMax, .iPhone12, .iPhone12Mini, .iPhone12Pro, .iPhone12ProMax, .iPhone13, .iPhone13Mini, .iPhone13Pro, .iPhone13ProMax]
-    }
-    
     /// All Plus and Max-Sized Devices
     public static var allPlusSizedDevices: [Device] {
         return [.iPhone6Plus, .iPhone6sPlus, .iPhone7Plus, .iPhone8Plus, .iPhoneXSMax, .iPhone11ProMax, .iPhone12ProMax, .iPhone13ProMax]
@@ -758,12 +752,6 @@ public enum Device {
     /// All simulator iPad mini
     public static var allSimulatorMiniDevices: [Device] {
         return allMiniDevices.map(Device.simulator)
-    }
-    
-    /// All simulator X series Devices
-    @available(*, deprecated, renamed: "allSimulatorDevicesWithSensorHousing")
-    public static var allSimulatorXSeriesDevices: [Device] {
-        return allDevicesWithSensorHousing.map(Device.simulator)
     }
     
     /// All simulator Plus and Max-Sized Devices
@@ -1645,14 +1633,93 @@ extension Device {
 }
 #endif
 
+#warning("Implement For Apple Watch and Apple TV")
+//MARK: - CPU
+extension Device{
+    
+    ///Returns the CPU name of the device
+    public var cpuName:String {
+        let processorNames = Array(CPUinfo().keys)
+        return processorNames[0]
+    }
+    
+    ///Returns the clock speed of the CPU
+    public var cpuSpeed:String {
+        let processorSpeed = Array(CPUinfo().values)
+        return processorSpeed[0]
+    }
+    
+    private func CPUinfo() -> Dictionary<String, String> {
+        
+        switch self {
+            
+        case .iPodTouch5:                                 return ["A5":"800 MHz"]
+        case .iPodTouch6:                                 return ["A8":"1.4 GHz"]
+        case .iPodTouch7:                                 return ["A10":"1.63 GHz"]
+            
+        case .iPhone4:                                    return ["A4":"800 MHz"]
+        case .iPhone4s:                                   return ["A5":"800 MHz"]
+        case .iPhone5:                                    return ["A6":"1.3 GHz"]
+        case .iPhone5c:                                   return ["A6":"1.3 GHz"]
+        case .iPhone5s:                                   return ["A7":"1.3 GHz"]
+        case .iPhone6:                                    return ["A8":"1.4 GHz"]
+        case .iPhone6Plus:                                return ["A8":"1.4 GHz"]
+        case .iPhone6s:                                   return ["A9":"1.85 GHz"]
+        case .iPhone6sPlus:                               return ["A9":"1.85 GHz"]
+        case .iPhone7:                                    return ["A10":"2.34 GHz"]
+        case .iPhone7Plus:                                return ["A10":"2.34 GHz"]
+        case .iPhoneSE:                                   return ["A9":"1.85 GHz"]
+        case .iPhone8:                                    return ["A11":"2.39 GHz"]
+        case .iPhone8Plus:                                return ["A11":"2.39 GHz"]
+        case .iPhoneX:                                    return ["A11":"2.39 GHz"]
+        case .iPhoneXS,
+                .iPhoneXSMax,
+                .iPhoneXR:                                return ["A12":"2.5 GHz"]
+        case .iPhone11,
+                .iPhone11Pro,
+                .iPhone11ProMax:                          return ["A13":"2650 GHz"]
+        case .iPhoneSE2:                                  return ["A13":"2.65 GHz"]
+        case .iPhone12Mini,
+                .iPhone12,
+                .iPhone12Pro:                             return ["A14":"2.99 GHz"]
+        case .iPhone12ProMax:                             return ["A14":"3.1 GHz"]
+        case .iPhone13Mini,
+                .iPhone13,
+                .iPhone13Pro,
+                .iPhone13ProMax:                          return ["A15":"3.22 GHz"]
+            
+        case .iPad2:                                      return ["A5":"1.0 GHz"]
+        case .iPad3:                                      return ["A5X":"1.0 GHz"]
+        case .iPad4:                                      return ["A6X":"1.4 GHz"]
+        case .iPadAir:                                    return ["A7":"1.4 GHz"]
+        case .iPadAir2:                                   return ["A8X":"1.5 GHz"]
+        case .iPad5:                                      return ["A9":"1.85 GHz"]
+        case .iPadMini:                                   return ["A5":"1.0 GHz"]
+        case .iPadMini2:                                  return ["A7":"1.3 GHz"]
+        case .iPadMini3:                                  return ["A7":"1.3 GHz"]
+        case .iPadMini4:                                  return ["A8":"1.5 GHz"]
+        case .iPadPro9Inch:                               return ["A9X":"2.16 GHz"]
+        case .iPadPro12Inch:                              return ["A9X":"2.24 GHz"]
+        case .iPadPro12Inch2,
+                .iPadPro10Inch:                           return ["A10X":"2.34 GHz"]
+        case .iPadPro11Inch:                              return ["A12X":"2.5 GHz"]
+        case .iPadPro12Inch3,
+                .iPadPro11Inch2,
+                .iPadPro12Inch4:                          return ["A12Z":"2.5 GHz"]
+        case .iPadPro11Inch3,
+                .iPadPro12Inch5:                          return ["M1":"3.1 GHz"]
+            
+        default:                                          return ["N/A":"N/A"]
+        }
+    }
+}
+
+
 #if os(iOS)
 // MARK: Cameras
 extension Device {
     
     public enum CameraType {
-        @available(*, deprecated, renamed: "wide")
-        case normal
-        
         case wide
         case telephoto
         case ultraWide
@@ -1731,12 +1798,6 @@ extension Device {
         return [.iPodTouch5, .iPodTouch6, .iPodTouch7, .iPhone4, .iPhone4s, .iPhone5, .iPhone5c, .iPhone5s, .iPhone6, .iPhone6Plus, .iPhone6s, .iPhone6sPlus, .iPhone7, .iPhone7Plus, .iPhoneSE, .iPhone8, .iPhone8Plus, .iPhoneX, .iPhoneXS, .iPhoneXSMax, .iPhoneXR, .iPhone11, .iPhone11Pro, .iPhone11ProMax, .iPhoneSE2, .iPhone12, .iPhone12Mini, .iPhone12Pro, .iPhone12ProMax, .iPhone13, .iPhone13Mini, .iPhone13Pro, .iPhone13ProMax, .iPad2, .iPad3, .iPad4, .iPadAir, .iPadAir2, .iPad5, .iPad6, .iPadAir3, .iPad7, .iPad8, .iPad9, .iPadAir4, .iPadMini, .iPadMini2, .iPadMini3, .iPadMini4, .iPadMini5, .iPadMini6, .iPadPro9Inch, .iPadPro12Inch, .iPadPro12Inch2, .iPadPro10Inch, .iPadPro11Inch, .iPadPro12Inch3, .iPadPro11Inch2, .iPadPro12Inch4, .iPadPro11Inch3, .iPadPro12Inch5]
     }
     
-    /// All devices that feature a normal camera
-    @available(*, deprecated, renamed: "allDevicesWithWideCamera")
-    public static var allDevicesWithNormalCamera: [Device] {
-        return Device.allDevicesWithWideCamera
-    }
-    
     /// All devices that feature a wide camera
     public static var allDevicesWithWideCamera: [Device] {
         return [.iPodTouch5, .iPodTouch6, .iPodTouch7, .iPhone4, .iPhone4s, .iPhone5, .iPhone5c, .iPhone5s, .iPhone6, .iPhone6Plus, .iPhone6s, .iPhone6sPlus, .iPhone7, .iPhone7Plus, .iPhoneSE, .iPhone8, .iPhone8Plus, .iPhoneX, .iPhoneXS, .iPhoneXSMax, .iPhoneXR, .iPhone11, .iPhone11Pro, .iPhone11ProMax, .iPhoneSE2, .iPhone12, .iPhone12Mini, .iPhone12Pro, .iPhone12ProMax, .iPhone13, .iPhone13Mini, .iPhone13Pro, .iPhone13ProMax, .iPad2, .iPad3, .iPad4, .iPadAir, .iPadAir2, .iPad5, .iPad6, .iPadAir3, .iPad7, .iPad8, .iPad9, .iPadAir4, .iPadMini, .iPadMini2, .iPadMini3, .iPadMini4, .iPadMini5, .iPadMini6, .iPadPro9Inch, .iPadPro12Inch, .iPadPro12Inch2, .iPadPro10Inch, .iPadPro11Inch, .iPadPro12Inch3, .iPadPro11Inch2, .iPadPro12Inch4, .iPadPro11Inch3, .iPadPro12Inch5]
@@ -1757,12 +1818,6 @@ extension Device {
         return !self.cameras.isEmpty
     }
     
-    /// Returns whether or not the current device has a normal camera
-    @available(*, deprecated, renamed: "hasWideCamera")
-    public var hasNormalCamera: Bool {
-        return self.hasWideCamera
-    }
-    
     /// Returns whether or not the current device has a wide camera
     public var hasWideCamera: Bool {
         return self.cameras.contains(.wide)
@@ -1780,8 +1835,8 @@ extension Device {
     
     /// Returns whether or not the current device has a notch
     public var hasNotch: Bool {
-        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         if #available(iOS 11.0, *) {
+            let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
             return keyWindow?.safeAreaInsets.bottom ?? 0 > 0
         } else {
             return false
